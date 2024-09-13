@@ -6,7 +6,7 @@
 
 #include "input.h"
 
-#define MAX_CMD_LEN 1024
+#define MAX_CMD_LEN 4096
 
 Options options = {0};
 
@@ -36,8 +36,8 @@ void safeSystem(char *command) {
     if (!options.silent || options.dryRun) printf("%s\n", command);
 
     if (options.dryRun) return;
-    // int result = system(command);
-    // if (result != 0) perror("Error executing program");
+    int result = system(command);
+    if (result != 0) perror("Error executing program");
 }
 
 void createDir(char *dir) {
@@ -94,9 +94,20 @@ void runInput() {
 
         char command[MAX_CMD_LEN] = {0};
 
-        sprintf(command, "./%s/%s/%s < %s/%s/%s > %s/%s/%s", options.dir, options.binDir, options.binName,
-                options.dir, options.inDir, inFile,
-                options.dir, options.outDir, outFile);
+        char pipes[MAX_CMD_LEN] = {0};
+
+        sprintf(pipes, "< %s/%s/%s > %s/%s/%s 2> %s/%s/%s", 
+                        options.dir, options.inDir, inFile,
+                        options.dir, options.outDir, outFile,
+                        options.dir, options.outDir, errFile);
+        
+
+        if (options.valgrind) {
+            sprintf(command, "valgrind --leak-check=full -s ./%s/%s/%s %s", options.dir, options.binDir, options.binName, pipes);
+        } else {
+            sprintf(command, "./%s/%s/%s %s", options.dir, options.binDir, options.binName, pipes);
+        }
+
 
         safeSystem(command);
         free(outFile);
@@ -117,6 +128,5 @@ int main(int argc, char *argv[]) {
 
     compileProgram(options.dir, options.binDir, options.binName);
     runInput(options.inDir, options.outDir, options.refDir);
-
     return 0;
 }

@@ -13,7 +13,7 @@ main: *.c | $(BIN_DIR)
 
 
 debug: main | $(OUT_DIR)
-		./$(BIN_DIR)/main -d -D Test
+		./$(BIN_DIR)/main -v -D Test
 
 valgrind: main | $(OUT_DIR)
 	valgrind --leak-check=full -s ./$(BIN_DIR)/main -d -D Test
