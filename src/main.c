@@ -3,18 +3,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
+
 #include "input.h"
 
 #define MAX_CMD_LEN 1024
-
-// #define DIR "Test"
-#define REF_DIR "ref"
-#define OUT_DIR "out"
-#define BIN_DIR "bin"
-#define IN_DIR "in"
-
-char compiler[100] = "gcc";
-char compilerFlags[100] = "-std=c99 -pedantic -Wall";
 
 Options options = {0};
 
@@ -44,8 +36,8 @@ void safeSystem(char *command) {
     if (!options.silent || options.dryRun) printf("%s\n", command);
 
     if (options.dryRun) return;
-    int result = system(command);
-    if (result != 0) perror("Error executing program");
+    // int result = system(command);
+    // if (result != 0) perror("Error executing program");
 }
 
 void createDir(char *dir) {
@@ -56,27 +48,26 @@ void createDir(char *dir) {
     perror("Unable to create output directory");
 }
 
-
 /*
  * gcc *c -std=c99 -pedantic -Wall -o dir/bin/name
  */
 void compileProgram(char *dir, char *binDir, char *binName) {
     char command[MAX_CMD_LEN] = {0};
 
-    char adf[MAX_CMD_LEN] = {0};
-    sprintf(adf, "%s/%s", dir, binDir);
-    createDir(adf);
-    sprintf(command, "%s %s/*c %s -o %s/%s/%s", compiler, dir, compilerFlags,
-                                               dir, binDir, binName);
+    char path[MAX_CMD_LEN] = {0};
+    sprintf(path, "%s/%s", dir, binDir);
+    createDir(path);
+    sprintf(command, "%s %s/*c %s -o %s/%s/%s", options.compiler, dir, options.compilerFlags,
+            dir, binDir, binName);
 
     safeSystem(command);
 }
 
-
-void runInput(char *inDir, char *outDir, char *refDir) {
-
+void runInput() {
     struct dirent *entry;
-    DIR *dir = opendir(inDir);
+    char inPath[MAX_CMD_LEN] = {0};
+    sprintf(inPath, "%s/%s", options.dir, options.inDir);
+    DIR *dir = opendir(inPath);
 
     // Check if the input directory was opened successfully
     if (dir == NULL) {
@@ -84,8 +75,9 @@ void runInput(char *inDir, char *outDir, char *refDir) {
         return;
     }
 
-
-    createDir(outDir);
+    char outPath[MAX_CMD_LEN] = {0};
+    sprintf(outPath, "%s/%s", options.dir, options.outDir);
+    createDir(outPath);
 
     // Iterate over all files in the input folder
     while ((entry = readdir(dir)) != NULL) {
@@ -100,12 +92,11 @@ void runInput(char *inDir, char *outDir, char *refDir) {
 
         char *errFile = replace(inFile, "err", -2);
 
-
         char command[MAX_CMD_LEN] = {0};
-        
+
         sprintf(command, "./%s/%s/%s < %s/%s/%s > %s/%s/%s", options.dir, options.binDir, options.binName,
-                                                    options.dir, options.inDir, inFile,
-                                                    options.dir, options.outDir, outFile);
+                options.dir, options.inDir, inFile,
+                options.dir, options.outDir, outFile);
 
         safeSystem(command);
         free(outFile);
@@ -117,49 +108,15 @@ void runInput(char *inDir, char *outDir, char *refDir) {
 }
 
 int main(int argc, char *argv[]) {
-
-
     for (int i = 0; i < argc; i++) {
         printf("%d: %s\n", i, argv[i]);
     }
-    
-    Options options = parseOptions(argc, argv);
 
-    printf("compiler:      %s\n", options.compiler);
-    printf("compilerFlags: %s\n", options.compilerFlags);
-    printf("silent:        %d\n", options.silent);
-    printf("dryRun:        %d\n", options.dryRun);
-    printf("dir:           %s\n", options.dir);
-    printf("binDir:        %s\n", options.binDir);
-    printf("binName:       %s\n", options.binName);
-    printf("inDir:         %s\n", options.inDir);
-    printf("outDir:        %s\n", options.outDir);
-    printf("refDir:        %s\n", options.refDir);
-
-    return 0;
-    // if (argc != 3) {
-    //     fprintf(stderr, "Usage: %s <input_folder> <output_folder>\n", argv[0]);
-    //     return 1;
-    // }
-    options.dryRun = 0;
-    options.silent = 0;
-
-    options.dir = "Test"; 
-    options.binDir = "bin";
-    options.binName = "name";
-
-    options.inDir = "in";
-    options.outDir = "out";
-    options.refDir = "ref";
-
-
-
-    char input_folder[] = "Test/in";
-    char output_folder[] = "Test/out";
-    char refFolder[] = "Test/ref";
+    options = parseOptions(argc, argv);
+    printOptions(options);
 
     compileProgram(options.dir, options.binDir, options.binName);
-    runInput(input_folder, output_folder, refFolder);
+    runInput(options.inDir, options.outDir, options.refDir);
 
     return 0;
 }

@@ -1,4 +1,21 @@
 
+
+
+// default options
+#define _COMPILER "gcc"
+#define _COMPILER_FLAGS "-std=c99 -pedantic -Wall"
+
+#define _SILENT 0
+#define _DRYRUN 0
+#define _VALGRIND 0;
+
+#define _DIR "."
+#define _BIN_DIR "bin"
+#define _BIN_NAME "program"
+#define _IN_DIR "in"
+#define _OUT_DIR "out"
+#define _REF_DIR "ref"
+
 typedef struct Options {
     
     char *compiler;
@@ -6,6 +23,7 @@ typedef struct Options {
 
     short silent;
     short dryRun;
+    short valgrind;
 
     char *dir;
     char *binDir;
@@ -18,5 +36,5 @@ typedef struct Options {
 
 
 Options parseOptions(int argc, char *argv[]);
-
+void printOptions(Options options);
 

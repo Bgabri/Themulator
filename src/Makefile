@@ -13,10 +13,10 @@ main: *.c | $(BIN_DIR)
 
 
 debug: main | $(OUT_DIR)
-		./$(BIN_DIR)/main
+		./$(BIN_DIR)/main -d -D Test
 
 valgrind: main | $(OUT_DIR)
-	valgrind --leak-check=full -s ./$(BIN_DIR)/main
+	valgrind --leak-check=full -s ./$(BIN_DIR)/main -d -D Test
 	mv vgcore.* $(BIN_DIR)
 
 
