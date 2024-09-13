@@ -8,12 +8,14 @@ INCREMENT_COUNT(0, 4, 2);
 
 int main(int argc, char const* argv[]) {
 
-    ensure(1+1 == 2);
-    
-    char input[100];
-    scanf("%s", input);
-    printf("%s\n", input);
+    int n ;
+    scanf("%d\n", &n);
 
+    for (int i = 0; i < n; i++) {
+        int a, b;
+        scanf("%d %d", &a, &b);
+        printf("%d\n", a+b);
+    }
     
     return 0;
 }
