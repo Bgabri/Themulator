@@ -1,17 +1,9 @@
-/*
- * [O] 1.in: 
- * []
- */
-
-
-
-
-
 #include <dirent.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
+#include "input.h"
 
 #define MAX_CMD_LEN 1024
 
@@ -23,23 +15,6 @@
 
 char compiler[100] = "gcc";
 char compilerFlags[100] = "-std=c99 -pedantic -Wall";
-
-typedef struct Options {
-    
-    char *compiler;
-    char *compilerFlags;
-
-    short silent;
-    short dryRun;
-
-    char *dir;
-    char *binDir;
-    char *binName;
-    char *inDir;
-    char *outDir;
-    char *refDir;
-
-} Options;
 
 Options options = {0};
 
@@ -109,6 +84,7 @@ void runInput(char *inDir, char *outDir, char *refDir) {
         return;
     }
 
+
     createDir(outDir);
 
     // Iterate over all files in the input folder
@@ -141,6 +117,26 @@ void runInput(char *inDir, char *outDir, char *refDir) {
 }
 
 int main(int argc, char *argv[]) {
+
+
+    for (int i = 0; i < argc; i++) {
+        printf("%d: %s\n", i, argv[i]);
+    }
+    
+    Options options = parseOptions(argc, argv);
+
+    printf("compiler:      %s\n", options.compiler);
+    printf("compilerFlags: %s\n", options.compilerFlags);
+    printf("silent:        %d\n", options.silent);
+    printf("dryRun:        %d\n", options.dryRun);
+    printf("dir:           %s\n", options.dir);
+    printf("binDir:        %s\n", options.binDir);
+    printf("binName:       %s\n", options.binName);
+    printf("inDir:         %s\n", options.inDir);
+    printf("outDir:        %s\n", options.outDir);
+    printf("refDir:        %s\n", options.refDir);
+
+    return 0;
     // if (argc != 3) {
     //     fprintf(stderr, "Usage: %s <input_folder> <output_folder>\n", argv[0]);
     //     return 1;
