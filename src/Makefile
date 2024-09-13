@@ -2,7 +2,7 @@
 CC     = gcc
 CFLAGS = -std=c99 -pedantic -Wall $(EXTRA)
 BIN_DIR = bin
-OUT_DIR = output
+OUT_DIR = out
 IN_DIR = in
 EXTRA = 
 
@@ -12,10 +12,10 @@ main: *.c | $(BIN_DIR)
 	$(CC) $(CFLAGS) -o $(BIN_DIR)/$@ $^ -g 
 
 
-debug: main | $(OUT_DIR)
-		./$(BIN_DIR)/main -v -D Test
+debug: main
+		./$(BIN_DIR)/main -s -D Test
 
-valgrind: main | $(OUT_DIR)
+valgrind: main
 	valgrind --leak-check=full -s ./$(BIN_DIR)/main -d -D Test
 	mv vgcore.* $(BIN_DIR)
 
@@ -31,7 +31,7 @@ pull-ensure :
 	rm -r -f Ensure
 
 
-$(BIN_DIR) $(OUT_DIR):
+$(BIN_DIR):
 	mkdir -p $@
 	@echo "made ./$@"
 

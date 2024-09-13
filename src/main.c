@@ -3,10 +3,15 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
+#include <sys/wait.h>
 
 #include "input.h"
 
 #define MAX_CMD_LEN 4096
+
+typedef struct nibbler {
+    unsigned int _1 : 8, _2 : 8, _3 : 8, _4 : 8;
+} nibbler;
 
 Options options = {0};
 
@@ -32,12 +37,13 @@ char *replace(char *str0, char *str1, int pos) {
     return strNew;
 }
 
-void safeSystem(char *command) {
+int safeSystem(char *command) {
     if (!options.silent || options.dryRun) printf("%s\n", command);
 
-    if (options.dryRun) return;
+    if (options.dryRun) return 0;
     int result = system(command);
-    if (result != 0) perror("Error executing program");
+
+    return WEXITSTATUS(result);
 }
 
 void createDir(char *dir) {
@@ -96,11 +102,10 @@ void runInput() {
 
         char pipes[MAX_CMD_LEN] = {0};
 
-        sprintf(pipes, "< %s/%s/%s > %s/%s/%s 2> %s/%s/%s", 
-                        options.dir, options.inDir, inFile,
-                        options.dir, options.outDir, outFile,
-                        options.dir, options.outDir, errFile);
-        
+        sprintf(pipes, "< %s/%s/%s > %s/%s/%s 2> %s/%s/%s",
+                options.dir, options.inDir, inFile,
+                options.dir, options.outDir, outFile,
+                options.dir, options.outDir, errFile);
 
         if (options.valgrind) {
             sprintf(command, "valgrind --leak-check=full -s ./%s/%s/%s %s", options.dir, options.binDir, options.binName, pipes);
@@ -109,7 +114,25 @@ void runInput() {
         }
 
 
-        safeSystem(command);
+        char cmprCommand[MAX_CMD_LEN] = {0};
+
+        sprintf(cmprCommand, "cmp -s %s/%s/%s %s/%s/%s",
+            options.dir, options.outDir, outFile,
+            options.dir, options.refDir, outFile);
+
+        int runResult = safeSystem(command);
+        int cmprResult = safeSystem(cmprCommand);
+
+        if (runResult == 0 && cmprResult == 0) {
+            printf("\x1b[32m[o]\x1b[0m %s\n", inFile);
+        } else if(runResult != 0) {
+            printf("\x1b[35m[e]\x1b[0m %s exit error: %d\n", inFile, runResult);
+        } else if (cmprResult == 1) {
+            printf("\x1b[31m[x]\x1b[0m %s\n", inFile);
+        } else {
+            printf("\x1b[33m[?]\x1b[0m %s\n", inFile);
+        }
+        
         free(outFile);
         free(errFile);
     }
@@ -119,14 +142,27 @@ void runInput() {
 }
 
 int main(int argc, char *argv[]) {
-    for (int i = 0; i < argc; i++) {
-        printf("%d: %s\n", i, argv[i]);
-    }
+    // for (int i = 0; i < argc; i++) {
+    //     printf("%d: %s\n", i, argv[i]);
+    // }
 
     options = parseOptions(argc, argv);
-    printOptions(options);
+    // printOptions(options);
 
     compileProgram(options.dir, options.binDir, options.binName);
     runInput(options.inDir, options.outDir, options.refDir);
     return 0;
 }
+
+/*
+ * make & make install
+ * readme
+ *
+ *
+ * [\][|][/][-] loading
+ * [o] output matches
+ * [x] wrong output
+ * [e] exited with error
+ * [t] timeout
+ *
+ */
