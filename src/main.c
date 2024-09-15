@@ -5,7 +5,7 @@
 #include <sys/stat.h>
 #include <sys/wait.h>
 
-#include "input.h"
+#include "parseArgs.h"
 
 #define MAX_CMD_LEN 4096
 
@@ -75,7 +75,6 @@ void runInput() {
     sprintf(inPath, "%s/%s", options.dir, options.inDir);
     DIR *dir = opendir(inPath);
 
-    // Check if the input directory was opened successfully
     if (dir == NULL) {
         perror("Unable to open input directory");
         return;

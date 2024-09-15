@@ -1,18 +1,18 @@
-
-#include "input.h"
+#include "parseArgs.h"
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 int parseCompiler(char *argv[], int *i, Options *o) {
-    printf("parseCompiler is not implemented\n");
-    exit(0);
+    // printf("parseCompiler is not implemented\n");
+    // exit(0);
     return -1;
 }
 
 int parseCompilerFlags(char *argv[], int *i, Options *o) {
-    printf("parseCompilerFlags is not implemented\n");
-    exit(0);
+    // printf("parseCompilerFlags is not implemented\n");
+    // exit(0);
     return -1;
 }
 
@@ -32,62 +32,91 @@ int parseValgrind(char *argv[], int *i, Options *o) {
 }
 
 int parseDir(char *argv[], int *i, Options *o) {
+    if (argv[*i] == NULL) return -1;
     o->dir = argv[*i];
     (*i)++;
     return 1;
 }
 
 int parseBinDir(char *argv[], int *i, Options *o) {
+    if (argv[*i] == NULL) return -1;
     o->binDir = argv[*i];
     (*i)++;
     return 1;
 }
 
 int parseBinName(char *argv[], int *i, Options *o) {
+    if (argv[*i] == NULL) return -1;
     o->binName = argv[*i];
     (*i)++;
     return 1;
 }
 
 int parseInDir(char *argv[], int *i, Options *o) {
+    if (argv[*i] == NULL) return -1;
     o->inDir = argv[*i];
     (*i)++;
     return 1;
 }
 
 int parseOutDir(char *argv[], int *i, Options *o) {
+    if (argv[*i] == NULL) return -1;
     o->outDir = argv[*i];
     (*i)++;
     return 1;
 }
 
 int parseRefDir(char *argv[], int *i, Options *o) {
+    if (argv[*i] == NULL) return -1;
     o->refDir = argv[*i];
     (*i)++;
     return 1;
 }
 
 int printHelp(char *argv[], int *i, Options *o) {
-    printf("Themulator - a programming tester\n");
     printf("Usage: thml [options]\n");
-    printf("Options:");
-    printf("    -h              Display this information\n");
-    printf("    -d              run in dry run mode\n");
-    printf("    -v              runs the binary through valgrind\n");
-    printf("    -b <name>       the name to give to the outputted binary\n");
-    printf("    -D <folder>     the folder of the source files to judge\n");
-    printf("    -I <folder>     the folder to the input of the test cases\n");
-    printf("    -O <folder>     the folder where the output is placed\n");
-    printf("    -B <folder>     the folder to output the binaries to\n");
-    printf("    -R <folder>     the folder with the reference outputs of the test cases\n");
+    printf("Options:\n");
+    printf("\t--help, -h\n");
+    printf("\t\tDisplay this information\n");
+    printf("\t--dry-run, -d\n");
+    printf("\t\trun without command execution\n");
+    printf("\t--verbose\n");
+    printf("\t\tprint out all the execution steps\n");
+    printf("\t--valgrind, -v\n");
+    printf("\t\truns the binary through valgrind\n");
+    printf("\t--bin-name <name>, -b <name>\n");
+    printf("\t\tthe name to give to the outputted binary\n");
+    printf("\t--dir <folder>, -D <folder>\n");
+    printf("\t\tthe folder of the source files to judge\n");
+    printf("\t--in-dir, -I <folder>\n");
+    printf("\t\tthe folder to the input of the test cases\n");
+    printf("\t--out-dir <folder>, -O <folder>\n");
+    printf("\t\tthe folder where the output is placed\n");
+    printf("\t--bin-dir <folder>, -B <folder>\n");
+    printf("\t\tthe folder to output the binaries to\n");
+    printf("\t--ref-dir <folder>, -R <folder>\n");
+    printf("\t\tthe folder with the reference outputs of the test cases\n");
     exit(0);
     return -1;
 }
 
 int parseDouble(char *argv[], int *i, Options *o) {
-    // printf("Themulator - a programming tester\n");
+    char *arg = argv[*i];
+    (*i)++;
 
-    // exit(0);
+    if (!strcmp(arg, "--compiler")) return parseCompiler(argv, i, o);
+    if (!strcmp(arg, "--compiler-flags")) return parseCompilerFlags(argv, i, o);
+    if (!strcmp(arg, "--dry-run")) return parseDryRun(argv, i, o);
+    if (!strcmp(arg, "--verbose")) return parseVerbose(argv, i, o);
+    if (!strcmp(arg, "--valgrind")) return parseValgrind(argv, i, o);
+    if (!strcmp(arg, "--bin-name")) return parseBinName(argv, i, o);
+    if (!strcmp(arg, "--help")) return printHelp(argv, i, o);
+    if (!strcmp(arg, "--bin-dir")) return parseBinDir(argv, i, o);
+    if (!strcmp(arg, "--dir")) return parseDir(argv, i, o);
+    if (!strcmp(arg, "--in-dir")) return parseInDir(argv, i, o);
+    if (!strcmp(arg, "--out-dir")) return parseOutDir(argv, i, o);
+    if (!strcmp(arg, "--ref-dir")) return parseRefDir(argv, i, o);
+
     return -1;
 }
 
@@ -95,44 +124,33 @@ int parseOption(char *argv[], int *i, Options *o) {
     if (argv == NULL) return -1;
     if (argv[*i][0] != '-') return -1;
 
-    switch (argv[*i][1]) {
+    char c = argv[*i][1];
+    (*i)++;
+    switch (c) {
         case 'c':
-            (*i)++;
             return parseCompiler(argv, i, o);
         case 'f':
-            (*i)++;
             return parseCompilerFlags(argv, i, o);
-        // case 'v':
-        //     (*i)++;
-        //     return parseVerbose(argv, i, o);
         case 'd':
-            (*i)++;
             return parseDryRun(argv, i, o);
         case 'v':
-            (*i)++;
             return parseValgrind(argv, i, o);
         case 'b':
-            (*i)++;
             return parseBinName(argv, i, o);
         case 'h':
-            (*i)++;
             return printHelp(argv, i, o);
         case 'B':
-            (*i)++;
             return parseBinDir(argv, i, o);
         case 'D':
-            (*i)++;
             return parseDir(argv, i, o);
         case 'I':
-            (*i)++;
             return parseInDir(argv, i, o);
         case 'O':
-            (*i)++;
             return parseOutDir(argv, i, o);
         case 'R':
-            (*i)++;
             return parseRefDir(argv, i, o);
         case '-':
+            --(*i);
             return parseDouble(argv, i, o);
         default:
             return -1;
@@ -159,7 +177,7 @@ Options parseOptions(int argc, char *argv[]) {
     while (argv[i] != NULL) {
         int result = parseOption(argv, &i, &options);
         if (result == -1) {
-            printf("Invalid usage\n");
+            printf("Invalid usage, use --help for usage\n");
             exit(0);
         }
     }
@@ -169,7 +187,7 @@ Options parseOptions(int argc, char *argv[]) {
 void printOptions(Options options) {
     printf("compiler:      %s\n", options.compiler);
     printf("compilerFlags: %s\n", options.compilerFlags);
-    printf("verbose:        %d\n", options.verbose);
+    printf("verbose:       %d\n", options.verbose);
     printf("dryRun:        %d\n", options.dryRun);
     printf("valgrind:      %d\n", options.dryRun);
     printf("dir:           %s\n", options.dir);
