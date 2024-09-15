@@ -38,7 +38,7 @@ char *replace(char *str0, char *str1, int pos) {
 }
 
 int safeSystem(char *command) {
-    if (!options.silent || options.dryRun) printf("%s\n", command);
+    if (options.verbose || options.dryRun) printf("%s\n", command);
 
     if (options.dryRun) return 0;
     int result = system(command);

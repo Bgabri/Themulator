@@ -1,11 +1,10 @@
 
 
-
 // default options
 #define _COMPILER "gcc"
 #define _COMPILER_FLAGS "-std=c99 -pedantic -Wall"
 
-#define _SILENT 0
+#define _VERBOSE 0
 #define _DRYRUN 0
 #define _VALGRIND 0;
 
@@ -17,11 +16,10 @@
 #define _REF_DIR "ref"
 
 typedef struct Options {
-    
     char *compiler;
     char *compilerFlags;
 
-    short silent;
+    short verbose;
     short dryRun;
     short valgrind;
 
@@ -34,7 +32,5 @@ typedef struct Options {
 
 } Options;
 
-
 Options parseOptions(int argc, char *argv[]);
 void printOptions(Options options);
-
