@@ -66,7 +66,11 @@ void compileProgram(char *dir, char *binDir, char *binName) {
     sprintf(command, "%s %s/*c %s -o %s/%s/%s", options.compiler, dir, options.compilerFlags,
             dir, binDir, binName);
 
-    safeSystem(command);
+    int result = safeSystem(command);
+    if (result == 0) return;
+
+    printf("compile error \n");
+    exit(0);
 }
 
 void runInput() {
@@ -131,7 +135,7 @@ void runInput() {
             printf("\tWrong output\n");
         } else {
             printf("\x1b[33m[?]\x1b[0m %s\n", inFile);
-            printf("\tfile not found\n");
+            printf("\treference file not found\n");
         }
         printf("\n");
 
