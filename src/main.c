@@ -97,7 +97,7 @@ void runInput() {
 
         char *errFile = replace(inFile, "err", -2);
 
-        char command[MAX_CMD_LEN] = {0};
+        char command[MAX_CMD_LEN * 2] = {0};
 
         char pipes[MAX_CMD_LEN] = {0};
 
@@ -112,26 +112,29 @@ void runInput() {
             sprintf(command, "./%s/%s/%s %s", options.dir, options.binDir, options.binName, pipes);
         }
 
-
         char cmprCommand[MAX_CMD_LEN] = {0};
 
         sprintf(cmprCommand, "cmp -s %s/%s/%s %s/%s/%s",
-            options.dir, options.outDir, outFile,
-            options.dir, options.refDir, outFile);
+                options.dir, options.outDir, outFile,
+                options.dir, options.refDir, outFile);
 
         int runResult = safeSystem(command);
         int cmprResult = safeSystem(cmprCommand);
 
         if (runResult == 0 && cmprResult == 0) {
             printf("\x1b[32m[o]\x1b[0m %s\n", inFile);
-        } else if(runResult != 0) {
-            printf("\x1b[35m[e]\x1b[0m %s exit error: %d\n", inFile, runResult);
+        } else if (runResult != 0) {
+            printf("\x1b[35m[e]\x1b[0m %s\n", inFile);
+            printf("\texit error: %d\n", runResult);
         } else if (cmprResult == 1) {
             printf("\x1b[31m[x]\x1b[0m %s\n", inFile);
+            printf("\tWrong output\n");
         } else {
             printf("\x1b[33m[?]\x1b[0m %s\n", inFile);
+            printf("\tfile not found\n");
         }
-        
+        printf("\n");
+
         free(outFile);
         free(errFile);
     }
