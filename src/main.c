@@ -64,14 +64,14 @@ void compileProgram(char *dir, char *binDir, char *binName) {
 
     char path[MAX_CMD_LEN] = {0};
     sprintf(path, "%s/%s", dir, binDir);
-    // createDir(path);
+    createDir(path);
     sprintf(command, "%s %s/*c %s -o %s/%s/%s", options.compiler, dir, options.compilerFlags,
             dir, binDir, binName);
 
     int result = safeSystem(command);
     if (result == 0) return;
 
-    printf("compile error \n");
+    perror("\x1b[35mCompilation error\x1b[0m");
     exit(0);
 }
 
@@ -155,18 +155,17 @@ void runInput() {
         int cmprResult = safeSystem(cmprCommand);
 
         if (runResult == 0 && cmprResult == 0) {
-            printf("\x1b[32m[o]\x1b[0m %s\n", inFile);
+            printf("\x1b[32m\x1b[1m[o]\x1b[0m %s\n", inFile);
         } else if (runResult != 0) {
-            printf("\x1b[35m[e]\x1b[0m %s\n", inFile);
-            printf("\texit error: %d\n", runResult);
+            printf("\x1b[35m\x1b[1m[e]\x1b[0m %s",inFile);
+            printf("\t\x1b[2mRuntime error: Program exited with code: %d\x1b[0m\n", runResult);
         } else if (cmprResult == 1) {
-            printf("\x1b[31m[x]\x1b[0m %s\n", inFile);
-            printf("\tWrong output\n");
+            printf("\x1b[31m\x1b[1m[x]\x1b[0m %s",inFile);
+            printf("\t\x1b[2mWrong output\x1b[0m\n");
         } else {
-            printf("\x1b[33m[?]\x1b[0m %s\n", inFile);
-            printf("\treference file not found\n");
+            printf("\x1b[33m\x1b[1m[?]\x1b[0m %s",inFile);
+            printf("\t\x1b[2mReference file not found.\x1b[0m\n");
         }
-        printf("\n");
 
         free(outFile);
         free(errFile);
