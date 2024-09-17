@@ -9,6 +9,8 @@
 
 #define MAX_CMD_LEN 4096
 
+typedef struct dirent dirent;
+
 typedef struct nibbler {
     unsigned int _1 : 8, _2 : 8, _3 : 8, _4 : 8;
 } nibbler;
@@ -62,7 +64,7 @@ void compileProgram(char *dir, char *binDir, char *binName) {
 
     char path[MAX_CMD_LEN] = {0};
     sprintf(path, "%s/%s", dir, binDir);
-    createDir(path);
+    // createDir(path);
     sprintf(command, "%s %s/*c %s -o %s/%s/%s", options.compiler, dir, options.compilerFlags,
             dir, binDir, binName);
 
@@ -73,24 +75,51 @@ void compileProgram(char *dir, char *binDir, char *binName) {
     exit(0);
 }
 
-void runInput() {
-    struct dirent *entry;
-    char inPath[MAX_CMD_LEN] = {0};
-    sprintf(inPath, "%s/%s", options.dir, options.inDir);
-    DIR *dir = opendir(inPath);
+int sortEntries(dirent **a, dirent **b) {
+    return strcmp((*a)->d_name, (*b)->d_name);
+}
 
+
+dirent **getEntires(DIR *dir, int *size) {
     if (dir == NULL) {
         perror("Unable to open input directory");
-        return;
+        return NULL;
     }
 
     char outPath[MAX_CMD_LEN] = {0};
     sprintf(outPath, "%s/%s", options.dir, options.outDir);
     createDir(outPath);
 
-    // Iterate over all files in the input folder
+
+    int numEntries = 0;
+    int allocSize = 256;
+    dirent **entries = calloc(allocSize, sizeof(dirent *));
+
+    dirent *entry;
     while ((entry = readdir(dir)) != NULL) {
-        // Ignore "." and ".."
+        if (allocSize < numEntries) {
+            allocSize *=2;
+            *entries = calloc(allocSize, sizeof(dirent *));
+        }
+        entries[numEntries++] = entry;
+    }
+    qsort(entries, numEntries, sizeof(dirent*), sortEntries);
+
+    *size = numEntries;
+
+    return entries;
+}
+
+ 
+void runInput() {
+    char inPath[MAX_CMD_LEN] = {0};
+    sprintf(inPath, "%s/%s", options.dir, options.inDir);
+    DIR *dir = opendir(inPath);
+    int numEntries = 0;
+    dirent **entries = getEntires(dir, &numEntries);
+    
+    for (int i = 0; i < numEntries; i++) {
+        dirent *entry = entries[i];
 
         char *inFile = entry->d_name;
         if (strcmp(inFile, ".") == 0 || strcmp(inFile, "..") == 0) continue;
@@ -145,6 +174,7 @@ void runInput() {
 
     // Close the input directory
     closedir(dir);
+    free(entries);
 }
 
 int main(int argc, char *argv[]) {
