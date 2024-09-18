@@ -87,11 +87,13 @@ void compileProgram(char *dir, char *binDir, char *binName) {
     int result = safeSystem(command);
     if (result == 0) return;
 
-    printf("\x1b[35mCompilation error\x1b[0m");
+    printf("\x1b[35mCompilation error\x1b[0m\n");
     exit(0);
 }
 
-int sortEntries(dirent **a, dirent **b) {
+int sortEntries(const void *_a, const void *_b) {
+    dirent** a = (dirent**) _a;
+    dirent** b = (dirent**) _b;
     return strcmp((*a)->d_name, (*b)->d_name);
 }
 

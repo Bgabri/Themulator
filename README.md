@@ -1,7 +1,5 @@
 # ${\color{Dandelion}Themulator}$
-
-Still very much a wip
-
+A cli demake of Themis, the programing judge.
 
 ## Install steps
 ```
@@ -15,7 +13,9 @@ make install
 ```
 
 
-## usage
+## Usage
+
+Our coding monkies do not guaranty the functionality of Themulator on non linux based systems.
 
 To ensure Themulator works as intended in your project folder include a `in` and `ref` folder for the input and reference output of the testcases. The extension of the input files should end with `.in`. additionally its matching reference output should be named the same with `.out` as its extension, as shown below.
 ```
@@ -60,3 +60,7 @@ Options:
         the folder with the reference outputs of the test cases
 ```
 
+## Example
+An example of running `thml` in `src/Test`.
+
+![example](example.png)
