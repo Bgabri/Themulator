@@ -7,6 +7,8 @@
 
 #include "parseArgs.h"
 #include "themis.h"
+#include "https.h"
+#include "json.h"
 
 #define MAX_CMD_LEN 4096
 
@@ -198,7 +200,7 @@ void runInput() {
 }
 
 int main(int argc, char *argv[]) {
-    // themis();
+    // json();
     // return 0;
     options = parseOptions(argc, argv);
 
