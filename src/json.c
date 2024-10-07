@@ -72,7 +72,7 @@ void addElements(jsonElement parent, int count, ...) {
 }
 
 char *toString(jsonElement element) {
-    char *val = calloc(1000, sizeof(char *));
+    char *val = calloc(10000, sizeof(char *));
 
     char *delim_open = "{";
     char *delim_close = "}";

@@ -1,3 +1,5 @@
+#ifndef JSON_H
+#define JSON_H
 
 typedef enum jsonType {
     _int_prim, _string_prim, _bool_prim, _element_array, _prim_array, _object, _null, _parent
@@ -26,3 +28,5 @@ void addElement(jsonElement parent, jsonElement child);
 void addElements(jsonElement parent, int count, ...);
 char *toString(jsonElement element);
 void freeElement(jsonElement element);
+
+#endif
