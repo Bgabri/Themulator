@@ -120,12 +120,19 @@
     #define DOUBLE(expr, count); { \
         ensureFailed((expr), #expr, count, __FILE__, __LINE__, __func__); \
     }
+
+    #define DOUBLE_F(expr, count, ...); { \
+        ensureFailedf((expr), #expr, count, __FILE__, __LINE__, __func__, __VA_ARGS__); \
+    }
 #endif
 
 
 #define ensure(expr) DOUBLE(expr, __COUNTER__)
+#define ensuref(expr, ...) DOUBLE_F(expr, __COUNTER__, __VA_ARGS__)
 
 void ensureFailed(int expr, char *assertion, unsigned char count, char *file, unsigned int line, const char *function);
+void ensureFailedf(int expr, char *assertion, unsigned char count, char *file, unsigned int line, const char *function, const char *format, ...);
+
 
 #endif // ENSURE_H
 

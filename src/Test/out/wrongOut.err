@@ -1,0 +1,13 @@
+==41547== Memcheck, a memory error detector
+==41547== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==41547== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
+==41547== Command: ././bin/program
+==41547== 
+==41547== 
+==41547== HEAP SUMMARY:
+==41547==     in use at exit: 0 bytes in 0 blocks
+==41547==   total heap usage: 2 allocs, 2 frees, 8,192 bytes allocated
+==41547== 
+==41547== All heap blocks were freed -- no leaks are possible
+==41547== 
+==41547== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
