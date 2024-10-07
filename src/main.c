@@ -200,8 +200,7 @@ void runInput() {
 }
 
 int main(int argc, char *argv[]) {
-    // json();
-    // return 0;
+    
     options = parseOptions(argc, argv);
 
     compileProgram(options.dir, options.binDir, options.binName);
