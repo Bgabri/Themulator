@@ -36,7 +36,12 @@ Then simply run `thml`.
 
 ### options
 ```
-Usage: thml [options]
+Usage: thml [options] <command>
+Commands:
+    download
+        Starts an interface to login and download files from Themis.
+    run
+        Compiles and runs the program with the given option.
 Options:
     --help, -h
         Display this information

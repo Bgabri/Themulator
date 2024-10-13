@@ -2,7 +2,7 @@
  * Usage: thml [options] <command>
  * Commands:
  *     download
- *         Starts an interface to login and download files from themis.
+ *         Starts an interface to login and download files from Themis.
  *     run
  *         Compiles and runs the program with the given option.
  * Options:

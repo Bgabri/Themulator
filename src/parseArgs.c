@@ -88,7 +88,12 @@ int parseCommand(char *argv[], int *i, Options *o) {
 }
 
 int printHelp(char *argv[], int *i, Options *o) {
-    printf("Usage: thml [options]\n");
+   printf("Usage: thml [options] <command>\n");
+    printf("Commands:\n");
+    printf("\tdownload\n");
+    printf("\t\tStarts an interface to login and download files from Themis.\n");
+    printf("\trun\n");
+    printf("\t\tCompiles and runs the program with the given option.\n");
     printf("Options:\n");
     printf("\t--help, -h\n");
     printf("\t\tDisplay this information\n");
