@@ -11,8 +11,7 @@
         dontFixup = true;
         dontPatchShebangs = true;
         Themulator = pkgs.stdenv.mkDerivation {
-          pname = "thml";
-          version = "0.1.12";
+          name = "thml";
 
           src = pkgs.fetchFromGitHub {
             owner = "Bgabri";
@@ -28,7 +27,7 @@
       with pkgs;
       {
         devShells.default = mkShell {
-            nativeBuildInputs = [ Themulator ];
+            nativeBuildInputs = [ Themulator cmake curl ];
           };
       });
 }
