@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+    Options options = {0};
+
 int parseCompiler(char *argv[], int *i, Options *o) {
     // printf("parseCompiler is not implemented\n");
     // exit(0);
@@ -73,6 +75,18 @@ int parseRefDir(char *argv[], int *i, Options *o) {
     return 1;
 }
 
+int parseCommand(char *argv[], int *i, Options *o) {
+    if (argv == NULL) return -1;
+
+    char *arg = argv[*i];
+    (*i)++;
+    if (!strcmp(arg, "run")) o->command = run;
+    else if (!strcmp(arg, "compile")) o->command = compile;
+    else if (!strcmp(arg, "download")) o->command = download;
+    else return -1;
+    return 1;
+}
+
 int printHelp(char *argv[], int *i, Options *o) {
     printf("Usage: thml [options]\n");
     printf("Options:\n");
@@ -122,7 +136,7 @@ int parseDouble(char *argv[], int *i, Options *o) {
 
 int parseOption(char *argv[], int *i, Options *o) {
     if (argv == NULL) return -1;
-    if (argv[*i][0] != '-') return -1;
+    if (argv[*i][0] != '-') return parseCommand(argv, i, o);
 
     char c = argv[*i][1];
     (*i)++;
@@ -158,7 +172,6 @@ int parseOption(char *argv[], int *i, Options *o) {
 }
 
 Options parseOptions(int argc, char *argv[]) {
-    Options options = {0};
     options.compiler = _COMPILER;
     options.compilerFlags = _COMPILER_FLAGS;
 
@@ -172,6 +185,8 @@ Options parseOptions(int argc, char *argv[]) {
     options.inDir = _IN_DIR;
     options.outDir = _OUT_DIR;
     options.refDir = _REF_DIR;
+
+    options.command = _COMMAND;
 
     int i = 1;
     while (argv[i] != NULL) {
