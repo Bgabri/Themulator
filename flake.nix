@@ -1,4 +1,4 @@
-// nix flake prefetch github:Bgabri/Themulator
+# nix flake prefetch github:Bgabri/Themulator
 {
   inputs = {
     flake-utils.url = "github:numtide/flake-utils";

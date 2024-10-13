@@ -1,7 +1,18 @@
 # ${\color{Dandelion}Themulator}$
 A cli demake of Themis, the programing judge.
 
+## Examples
+An example of running `thml` in `src/Test`.
+
+![thml run example](run.png)
+An example of running `thml download` in `src/Test`.
+
+![thml download example](download.png)
+
 ## Install steps
+Themulator depends on the libcurl headers to be installed.
+
+eg. on ubuntu: `apt-get install libcurl4-openssl-dev`
 ```
 git clone https://github.com/Bgabri/Themulator
 cd Themulator
@@ -17,6 +28,7 @@ make install
 
 Our coding monkies do not guaranty the functionality of Themulator on non linux based systems.
 
+### Default Folder Structure
 To ensure Themulator works as intended in your project folder include a `in` and `ref` folder for the input and reference output of the testcases. The extension of the input files should end with `.in`. additionally its matching reference output should be named the same with `.out` as its extension, as shown below.
 ```
 src/
@@ -31,8 +43,10 @@ src/
 |- main.c
 
 ```
-
+### Running
 Then simply run `thml`.
+
+To download the test cases from themis use `thml download` then follow the prompts.
 
 ### options
 ```
@@ -41,7 +55,7 @@ Commands:
     download
         Starts an interface to login and download files from Themis.
     run
-        Compiles and runs the program with the given option.
+        Compiles and runs the program with the given options.
 Options:
     --help, -h
         Display this information
@@ -64,8 +78,3 @@ Options:
     --ref-dir <folder>, -R <folder>
         the folder with the reference outputs of the test cases
 ```
-
-## Example
-An example of running `thml` in `src/Test`.
-
-![example](example.png)

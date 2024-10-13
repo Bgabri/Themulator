@@ -67,7 +67,7 @@ int login(char *user, char *password, char *csrfToken) {
     CurlResponse *r = postCURL("https://themis.housing.rug.nl/log/in", header, data, load_save);
 
     char *v = strstr(r->str, "Welcome, logged in as");
-    
+
     int result = v != NULL;
     free(data);
     freeResponse(r);
@@ -135,8 +135,6 @@ void downloadTestCases(char *assignment) {
     if (startsWith(assignment, "themis.housing.rug.nl")) assignment += strlen("themis.housing.rug.nl");
     if (*assignment == '/') assignment++;
 
-    
-
     int size = 0;
     char **tcs = getTestCases(assignment, &size);
 
@@ -186,11 +184,9 @@ int themis() {
     int size = 0;
     printf("user name:\n");
     char *user = scanString(&size, '\n', 0);
-    // char *user = "s4878728";
 
     printf("password:\n");
     char *pass = scanString(&size, '\n', '*');
-    // char *pass = "Dumpster-Related-Pasta-Attempt-42";
 
     curl_global_init(CURL_GLOBAL_DEFAULT);
 
