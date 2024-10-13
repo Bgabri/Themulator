@@ -208,6 +208,7 @@ int themis() {
 
     free(user);
     free(pass);
+    safeSystem("rm cookies.txt");
 
     // https://themis.housing.rug.nl/course/2024-2025/advalgo/labs-wk6/familytree
 

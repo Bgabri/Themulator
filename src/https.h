@@ -3,7 +3,7 @@
 
 #include "json.h"
 
-#define COOKIE_FILE "bin/cookies.txt"
+#define COOKIE_FILE "cookies.txt"
 
 typedef enum cookies {
     load, save, load_save
