@@ -26,7 +26,7 @@ make install
 
 ## Usage
 
-Our coding monkies do not guaranty the functionality of Themulator on non linux based systems.
+Our coding monkies do not guarantee the functionality of Themulator on non linux based systems.
 
 ### Default Folder Structure
 To ensure Themulator works as intended in your project folder include a `in` and `ref` folder for the input and reference output of the testcases. The extension of the input files should end with `.in`. additionally its matching reference output should be named the same with `.out` as its extension, as shown below.
