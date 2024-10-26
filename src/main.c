@@ -26,7 +26,7 @@ void compileProgram(char *dir, char *binDir, char *binName) {
     char path[MAX_CMD_LEN] = {0};
     sprintf(path, "%s/%s", dir, binDir);
     createDir(path);
-    sprintf(command, "%s %s/*c %s -o %s/%s/%s", options.compiler, dir, options.compilerFlags,
+    sprintf(command, "%s \"%s/\"*c %s -o \"%s/%s/%s\"", options.compiler, dir, options.compilerFlags,
             dir, binDir, binName);
 
     int result = safeSystem(command);
@@ -60,20 +60,20 @@ void runInput() {
 
         char pipes[MAX_CMD_LEN] = {0};
 
-        sprintf(pipes, "< %s/%s/%s > %s/%s/%s 2> %s/%s/%s",
+        sprintf(pipes, "< \"%s/%s/%s\" > \"%s/%s/%s\" 2> \"%s/%s/%s\"",
                 options.dir, options.inDir, inFile,
                 options.dir, options.outDir, outFile,
                 options.dir, options.outDir, errFile);
 
         if (options.valgrind) {
-            sprintf(command, "valgrind --leak-check=full -s ./%s/%s/%s %s", options.dir, options.binDir, options.binName, pipes);
+            sprintf(command, "valgrind --leak-check=full -s \"./%s/%s/%s\" %s", options.dir, options.binDir, options.binName, pipes);
         } else {
-            sprintf(command, "./%s/%s/%s %s", options.dir, options.binDir, options.binName, pipes);
+            sprintf(command, "\"./%s/%s/%s\" %s", options.dir, options.binDir, options.binName, pipes);
         }
 
         char cmprCommand[MAX_CMD_LEN] = {0};
 
-        sprintf(cmprCommand, "cmp -s %s/%s/%s %s/%s/%s",
+        sprintf(cmprCommand, "cmp -s \"%s/%s/%s\" \"%s/%s/%s\"",
                 options.dir, options.outDir, outFile,
                 options.dir, options.refDir, outFile);
 

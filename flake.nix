@@ -17,7 +17,7 @@
             owner = "Bgabri";
             repo = "Themulator";
             rev = "main";
-            sha256 = "sha256-GInRtFu1gnj3mlOgyGd81f2sQYX7qSmJHJatA3nKFbI=";
+            sha256 = "sha256-Iomn01miZE2s93ocDgAvw0jfvSlIaqMueJWqPpJ009E=";
           };
           
           buildInputs = with pkgs;[gcc cmake curl];
