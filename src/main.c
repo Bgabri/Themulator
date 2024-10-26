@@ -66,9 +66,9 @@ void runInput() {
                 options.dir, options.outDir, errFile);
 
         if (options.valgrind) {
-            sprintf(command, "valgrind --leak-check=full -s \"./%s/%s/%s\" %s", options.dir, options.binDir, options.binName, pipes);
+            sprintf(command, "valgrind --leak-check=full -s \"%s/%s/%s\" %s", options.dir, options.binDir, options.binName, pipes);
         } else {
-            sprintf(command, "\"./%s/%s/%s\" %s", options.dir, options.binDir, options.binName, pipes);
+            sprintf(command, "\"%s/%s/%s\" %s", options.dir, options.binDir, options.binName, pipes);
         }
 
         char cmprCommand[MAX_CMD_LEN] = {0};
