@@ -4,8 +4,10 @@
     flake-utils.url = "github:numtide/flake-utils";
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
   };
-  outputs = { nixpkgs, flake-utils, ... }:
-    flake-utils.lib.eachDefaultSystem (system:
+  outputs =
+    { nixpkgs, flake-utils, ... }:
+    flake-utils.lib.eachDefaultSystem (
+      system:
       let
         pkgs = import nixpkgs { inherit system; };
         dontFixup = true;
@@ -16,21 +18,30 @@
           src = pkgs.fetchFromGitHub {
             owner = "Bgabri";
             repo = "Themulator";
-            rev = "v0.1.0";
-            sha256 = "sha256-tJxYVejYnpBHQYwonaSFzeR6jl74ILTMprEaPILB8Z4=";
+            rev = "v0.2.0";
+            sha256 = "sha256-sJge7Geybnvnwh5lizgXMtL0ESMq14bvWBVXC08zb9E=";
           };
-          
-          buildInputs = with pkgs;[gcc cmake curl];
+
+          buildInputs = with pkgs; [
+            gcc
+            cmake
+            curl
+          ];
 
         };
       in
       with pkgs;
       {
         devShells.default = mkShell {
-          nativeBuildInputs = [ Themulator cmake curl ];
+          nativeBuildInputs = [
+            Themulator
+            cmake
+            curl
+          ];
           shellHook = ''
             exec fish
           '';
         };
-      });
+      }
+    );
 }
