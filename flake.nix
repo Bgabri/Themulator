@@ -16,8 +16,8 @@
           src = pkgs.fetchFromGitHub {
             owner = "Bgabri";
             repo = "Themulator";
-            rev = "main";
-            sha256 = "sha256-as2Hbp30hMoxWmkMFMWqZM190By0gtf7AirNUQ2VDXg=";
+            rev = "v0.1.0";
+            sha256 = "sha256-tJxYVejYnpBHQYwonaSFzeR6jl74ILTMprEaPILB8Z4=";
           };
           
           buildInputs = with pkgs;[gcc cmake curl];
@@ -27,7 +27,10 @@
       with pkgs;
       {
         devShells.default = mkShell {
-            nativeBuildInputs = [ Themulator cmake curl ];
-          };
+          nativeBuildInputs = [ Themulator cmake curl ];
+          shellHook = ''
+            exec fish
+          '';
+        };
       });
 }
