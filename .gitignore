@@ -6,6 +6,7 @@ build/
 *.exe
 *.log
 *.bin
+bin/
 CMakeCache.txt
 CMakeFiles/
 cmake_install.cmake

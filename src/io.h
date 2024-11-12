@@ -14,5 +14,5 @@ int startsWith(char *str, char *prefix);
 char *replace(char *str0, char *str1, int pos);
 int safeSystem(char *command);
 void createDir(char *dir);
-dirent **getEntires(DIR *dir, int *size);
+dirent **getEntries(DIR *dir, int *size);
 #endif

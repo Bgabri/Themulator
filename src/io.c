@@ -137,7 +137,7 @@ int sortEntries(const void *_a, const void *_b) {
 /*
  * returns all the file entries in the  given directory
  */
-dirent **getEntires(DIR *dir, int *size) {
+dirent **getEntries(DIR *dir, int *size) {
     if (dir == NULL) {
         perror("Unable to open input directory");
         return NULL;

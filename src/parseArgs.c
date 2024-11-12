@@ -4,17 +4,24 @@
 #include <stdlib.h>
 #include <string.h>
 
-    Options options = {0};
+Options options = {0};
 
 int parseCompiler(char *argv[], int *i, Options *o) {
-    // printf("parseCompiler is not implemented\n");
-    // exit(0);
-    return -1;
+    if (argv[*i] == NULL) return -1;
+    o->compiler = argv[*i];
+    (*i)++;
+
+    // remove default flags from options if compiler is set
+    if (strcmp(o->compilerFlags, _COMPILER_FLAGS) == 0) {
+        o->compilerFlags = ""; // TODO: ?!
+    }
+    return 1;
 }
 
 int parseCompilerFlags(char *argv[], int *i, Options *o) {
-    // printf("parseCompilerFlags is not implemented\n");
-    // exit(0);
+    if (argv[*i] == NULL) return -1;
+    o->compilerFlags = argv[*i];
+    (*i)++;
     return -1;
 }
 
@@ -97,6 +104,10 @@ int printHelp(char *argv[], int *i, Options *o) {
     printf("Options:\n");
     printf("\t--help, -h\n");
     printf("\t\tDisplay this information\n");
+    printf("\t--compiler, -c\n");
+    printf("\t\tThe compiler to use\n");
+    printf("\t--compiler-flags, -f\n");
+    printf("\t\tThe flags to pass to the compiler\n");
     printf("\t--dry-run, -d\n");
     printf("\t\trun without command execution\n");
     printf("\t--verbose\n");

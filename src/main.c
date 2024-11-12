@@ -42,7 +42,7 @@ void runInput() {
     DIR *dir = opendir(inPath);
 
     int numEntries = 0;
-    dirent **entries = getEntires(dir, &numEntries);
+    dirent **entries = getEntries(dir, &numEntries);
 
     for (int i = 0; i < numEntries; i++) {
         dirent *entry = entries[i];

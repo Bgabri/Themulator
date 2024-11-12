@@ -8,6 +8,10 @@
  * Options:
  *     --help, -h
  *         Display this information
+ *     --compiler, -c
+ *         The compiler to use
+ *     --compiler-flags, -f
+ *         The flags to pass to the compiler
  *     --dry-run, -d
  *         run without command execution
  *     --verbose
