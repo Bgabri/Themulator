@@ -119,14 +119,24 @@ int safeSystem(char *command) {
 /*
  * creates the given directory
  */
-void createDir(char *dir) {
+int createDir(char *dir) {
     struct stat st = {0};
-    if (stat(dir, &st) != -1) return;
+    if (stat(dir, &st) != -1) return 0;
 
-    if (mkdir(dir, 0700) == 0) return;
-    perror("Unable to create output directory");
+    if (mkdir(dir, 0700) == 0) return 1;
+    perror("Unable to create directory");
+    return 0;
 }
 
+int removeDir(char *dir) {
+    struct stat st = {0};
+    if (stat(dir, &st) == -1) return 0;
+    if(rmdir(dir) == 0) return 1;
+
+    perror("Unable to remove directory");
+    return 0;
+
+}
 
 int sortEntries(const void *_a, const void *_b) {
     dirent **a = (dirent **)_a;

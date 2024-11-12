@@ -13,6 +13,7 @@ int endsWith(char *str, char *suffix);
 int startsWith(char *str, char *prefix);
 char *replace(char *str0, char *str1, int pos);
 int safeSystem(char *command);
-void createDir(char *dir);
+int createDir(char *dir);
+int removeDir(char *dir);
 dirent **getEntries(DIR *dir, int *size);
 #endif

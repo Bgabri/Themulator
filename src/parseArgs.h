@@ -5,11 +5,13 @@
  *         Starts an interface to login and download files from Themis.
  *     run
  *         Compiles and runs the program with the given option.
+ *     interpret
+ *         interpret the program with the given option.
  * Options:
  *     --help, -h
  *         Display this information
  *     --compiler, -c
- *         The compiler to use
+ *         The compiler or interpreter to use
  *     --compiler-flags, -f
  *         The flags to pass to the compiler
  *     --dry-run, -d
@@ -49,7 +51,7 @@
 #define _REF_DIR "ref"
 
 typedef enum commandType {
-    run, compile, download
+    run, compile, interpret, download
 } commandType;
 
 

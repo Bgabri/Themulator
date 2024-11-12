@@ -22,7 +22,7 @@ int parseCompilerFlags(char *argv[], int *i, Options *o) {
     if (argv[*i] == NULL) return -1;
     o->compilerFlags = argv[*i];
     (*i)++;
-    return -1;
+    return 1;
 }
 
 int parseVerbose(char *argv[], int *i, Options *o) {
@@ -90,22 +90,25 @@ int parseCommand(char *argv[], int *i, Options *o) {
     if (!strcmp(arg, "run")) o->command = run;
     else if (!strcmp(arg, "compile")) o->command = compile;
     else if (!strcmp(arg, "download")) o->command = download;
+    else if (!strcmp(arg, "interpret")) o->command = interpret;
     else return -1;
     return 1;
 }
 
 int printHelp(char *argv[], int *i, Options *o) {
-   printf("Usage: thml [options] <command>\n");
+    printf("Usage: thml [options] <command>\n");
     printf("Commands:\n");
     printf("\tdownload\n");
     printf("\t\tStarts an interface to login and download files from Themis.\n");
     printf("\trun\n");
     printf("\t\tCompiles and runs the program with the given option.\n");
+    printf("\tinterpret\n");
+    printf("\t\tinterpret the program with the given option.\n");
     printf("Options:\n");
     printf("\t--help, -h\n");
     printf("\t\tDisplay this information\n");
     printf("\t--compiler, -c\n");
-    printf("\t\tThe compiler to use\n");
+    printf("\t\tThe compiler or interpreter to use\n");
     printf("\t--compiler-flags, -f\n");
     printf("\t\tThe flags to pass to the compiler\n");
     printf("\t--dry-run, -d\n");
