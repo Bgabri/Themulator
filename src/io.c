@@ -14,6 +14,27 @@
 
 extern Options options;
 
+char* dataPath() {
+    // https://specifications.freedesktop.org/basedir-spec/latest
+    char *thmlDataPath = calloc(MAX_CMD_LEN, sizeof(char));
+
+    char configsPath[MAX_CMD_LEN] = {0};
+    if (getenv("XDG_DATA_HOME") != NULL) {
+        strcpy(configsPath, getenv("XDG_DATA_HOME"));
+    } else {
+        sprintf(configsPath, "%s/.local/share", getenv("HOME"));
+    }
+
+    if (!pathExists(configsPath)) {
+        fprintf(stderr, "Config setup: failed, %s not found\n", configsPath);
+        exit(1);
+    }
+
+    sprintf(thmlDataPath, "%s/themulator", configsPath);
+    createPath(thmlDataPath);
+    return thmlDataPath;
+}
+
 void hideInput(int enable) {
     struct termios t;
     tcgetattr(STDIN_FILENO, &t);  // Get terminal attributes
