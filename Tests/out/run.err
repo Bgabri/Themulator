@@ -1,0 +1,3 @@
+valgrind: ./thml.out: Permission denied
+valgrind: ./thml.out: Permission denied
+valgrind: ./thml.out: Permission denied

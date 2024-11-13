@@ -1,0 +1,6 @@
+[32m[1m[o][0m 1.in
+[32m[1m[o][0m 2.in
+[32m[1m[o][0m 3.in
+[35m[1m[e][0m exitError.in	[2mRuntime error: Program exited with code: 1[0m
+[33m[1m[?][0m noOut.in	[2mReference file not found.[0m
+[31m[1m[x][0m wrongOut.in	[2mWrong output[0m

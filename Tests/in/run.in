@@ -1,0 +1,4 @@
+gcc ../src/*.c -std=c99 -pedantic -Wall -lcurl -o thml.out
+valgrind ./thml.out -D "program" --compiler gcc run
+valgrind ./thml.out -D "program" run
+valgrind ./thml.out -D "program" run
