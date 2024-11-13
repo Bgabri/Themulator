@@ -132,11 +132,12 @@ char* setupConfig() {
 int main(int argc, char *argv[]) {
     char *thmlConfigPath = setupConfig();
 
-    parseOptions(argc, argv);
 
     char cookieDir[MAX_CMD_LEN] = {0};
     sprintf(cookieDir, "%s/cookie.jar", thmlConfigPath);
+    free(thmlConfigPath);
 
+    parseOptions(argc, argv);
     switch (options.command) {
         case run:
             compileProgram(options.dir, options.binDir, options.binName);
@@ -153,6 +154,5 @@ int main(int argc, char *argv[]) {
             break;
     }
 
-    free(thmlConfigPath);
     return 0;
 }
