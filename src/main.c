@@ -126,7 +126,6 @@ char* setupConfig() {
 
     sprintf(thmlConfigPath, "%s/themulator", configsPath);
     createPath(thmlConfigPath);
-    printf("%s\n", thmlConfigPath);
     return thmlConfigPath;
 }
 

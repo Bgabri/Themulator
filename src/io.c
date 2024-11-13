@@ -9,6 +9,7 @@
 #include <termios.h>
 #include <unistd.h>
 
+#include "ensure.h"
 #include "parseArgs.h"
 
 extern Options options;
@@ -138,6 +139,20 @@ int removePath(char *path) {
 int pathExists(char *path) {
     struct stat st = {0};
     return stat(path, &st) != -1;
+}
+
+void printFile(char *path) {
+    FILE *file;
+    char ch;
+
+    file = fopen(path, "r");
+    ensure(file != NULL);
+
+    while ((ch = fgetc(file)) != EOF) {
+        putchar(ch);
+    }
+
+    fclose(file);
 }
 
 int sortEntries(const void *_a, const void *_b) {

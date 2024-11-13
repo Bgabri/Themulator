@@ -16,5 +16,6 @@ int safeSystem(char *command);
 int createPath(char *path);
 int removePath(char *path);
 int pathExists(char *path);
+void printFile(char *path);
 dirent **getEntries(DIR *dir, int *size);
 #endif

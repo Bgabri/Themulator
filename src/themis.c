@@ -206,7 +206,6 @@ void themis(char *cookiePath) {
     printf("password:\n");
     char *pass = scanString(&size, '\n', '*');
 
-
     char *csrfToken = grabCsrfToken(cookiePath);
     ensuref(csrfToken != NULL, "Curl: failed to grab csrf token\n");
     if (login(user, pass, csrfToken, cookiePath)) {

@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "io.h"
 
 Options options = {0};
 
@@ -96,40 +97,41 @@ int parseCommand(char *argv[], int *i, Options *o) {
 }
 
 int printHelp(char *argv[], int *i, Options *o) {
-    printf("Usage: thml [options] <command>\n");
-    printf("Commands:\n");
-    printf("\tdownload\n");
-    printf("\t\tStarts an interface to login and download files from Themis.\n");
-    printf("\trun\n");
-    printf("\t\tCompiles and runs the program with the given option.\n");
-    printf("\tinterpret\n");
-    printf("\t\tinterpret the program with the given option.\n");
-    printf("Options:\n");
-    printf("\t--help, -h\n");
-    printf("\t\tDisplay this information\n");
-    printf("\t--compiler, -c\n");
-    printf("\t\tThe compiler or interpreter to use\n");
-    printf("\t--compiler-flags, -f\n");
-    printf("\t\tThe flags to pass to the compiler\n");
-    printf("\t--dry-run, -d\n");
-    printf("\t\trun without command execution\n");
-    printf("\t--verbose\n");
-    printf("\t\tprint out all the execution steps\n");
-    printf("\t--valgrind, -v\n");
-    printf("\t\truns the binary through valgrind\n");
-    printf("\t--bin-name <name>, -b <name>\n");
-    printf("\t\tthe name to give to the outputted binary\n");
-    printf("\t--dir <folder>, -D <folder>\n");
-    printf("\t\tthe folder of the source files to judge\n");
-    printf("\t--in-dir, -I <folder>\n");
-    printf("\t\tthe folder to the input of the test cases\n");
-    printf("\t--out-dir <folder>, -O <folder>\n");
-    printf("\t\tthe folder where the output is placed\n");
-    printf("\t\twill also be used as the cookie output path\n");
-    printf("\t--bin-dir <folder>, -B <folder>\n");
-    printf("\t\tthe folder to output the binaries to\n");
-    printf("\t--ref-dir <folder>, -R <folder>\n");
-    printf("\t\tthe folder with the reference outputs of the test cases\n");
+    printf(
+    "Usage: thml [options] <command>\n"
+    "Commands:\n"
+    "\tdownload\n"
+    "\t\tStarts an interface to login and download files from Themis.\n"
+    "\trun\n"
+    "\t\tCompiles and runs the program with the given option.\n"
+    "\tinterpret\n"
+    "\t\tinterpret the program with the given option.\n"
+    "Options:\n"
+    "\t--help, -h\n"
+    "\t\tDisplay this information\n"
+    "\t--compiler, -c\n"
+    "\t\tThe compiler or interpreter to use\n"
+    "\t--compiler-flags, -f\n"
+    "\t\tThe flags to pass to the compiler\n"
+    "\t--dry-run, -d\n"
+    "\t\trun without command execution\n"
+    "\t--verbose\n"
+    "\t\tprint out all the execution steps\n"
+    "\t--valgrind, -v\n"
+    "\t\truns the binary through valgrind\n"
+    "\t--bin-name <name>, -b <name>\n"
+    "\t\tthe name to give to the outputted binary\n"
+    "\t--dir <folder>, -D <folder>\n"
+    "\t\tthe folder of the source files to judge\n"
+    "\t--in-dir, -I <folder>\n"
+    "\t\tthe folder to the input of the test cases\n"
+    "\t--out-dir <folder>, -O <folder>\n"
+    "\t\tthe folder where the output is placed\n"
+    "\t\twill also be used as the cookie output path\n"
+    "\t--bin-dir <folder>, -B <folder>\n"
+    "\t\tthe folder to output the binaries to\n"
+    "\t--ref-dir <folder>, -R <folder>\n"
+    "\t\tthe folder with the reference outputs of the test cases\n");
     exit(0);
     return -1;
 }
