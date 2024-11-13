@@ -107,11 +107,36 @@ void runInput() {
     free(entries);
 }
 
+
+char* setupConfig() {
+    // https://specifications.freedesktop.org/basedir-spec/latest
+    char *thmlConfigPath = calloc(MAX_CMD_LEN, sizeof(char));
+
+    char configsPath[MAX_CMD_LEN] = {0};
+    if (getenv("XDG_DATA_HOME") != NULL) {
+        strcpy(configsPath, getenv("XDG_DATA_HOME"));
+    } else {
+        sprintf(configsPath, "%s/.local/share", getenv("HOME"));
+    }
+
+    if (!pathExists(configsPath)) {
+        fprintf(stderr, "Config setup: failed, %s not found\n", configsPath);
+        exit(1);
+    }
+
+    sprintf(thmlConfigPath, "%s/themulator", configsPath);
+    createPath(thmlConfigPath);
+    printf("%s\n", thmlConfigPath);
+    return thmlConfigPath;
+}
+
 int main(int argc, char *argv[]) {
+    char *thmlConfigPath = setupConfig();
+
     parseOptions(argc, argv);
 
-    char cookiePath[MAX_CMD_LEN] = {0};
-    sprintf(cookiePath, "%s/%s/%s", options.dir, options.binDir, "cookie.txt");
+    char cookieDir[MAX_CMD_LEN] = {0};
+    sprintf(cookieDir, "%s/cookie.jar", thmlConfigPath);
 
     switch (options.command) {
         case run:
@@ -125,9 +150,10 @@ int main(int argc, char *argv[]) {
             runInput();
             break;
         case download:
-            themis(cookiePath);
+            themis(cookieDir);
             break;
     }
 
+    free(thmlConfigPath);
     return 0;
 }
