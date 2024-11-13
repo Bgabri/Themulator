@@ -1,0 +1,5 @@
+valgrind ./thml.out -D "sample" --
+valgrind ./thml.out -D "nonexistant"
+valgrind ./thml.out -D "sample" badrequest
+valgrind ./thml.out -D "sample" --nonexistant
+valgrind ./thml.out -D "sample" -D

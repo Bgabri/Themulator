@@ -1,1 +1,1 @@
-gcc ../src/*.c -std=c99 -pedantic -Wall -lcurl -o thml.out && valgrind ./thml.out download
+echo https://themis.housing.rug.nl/course/2024-2025/funcprog/Lab1/Fusc | valgrind ./thml.out -D bin download

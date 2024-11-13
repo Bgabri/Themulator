@@ -1,28 +1,14 @@
-==1366199== Memcheck, a memory error detector
-==1366199== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
-==1366199== Using Valgrind-3.23.0 and LibVEX; rerun with -h for copyright info
-==1366199== Command: ./thml.out download
-==1366199== 
-==1366199== 
-==1366199== Process terminating with default action of signal 2 (SIGINT)
-==1366199==    at 0x49B8840: _IO_file_underflow@@GLIBC_2.2.5 (in /nix/store/3bvxjkkmwlymr0fssczhgi39c3aj1l7i-glibc-2.40-36/lib/libc.so.6)
-==1366199==    by 0x49BAE2E: _IO_default_uflow (in /nix/store/3bvxjkkmwlymr0fssczhgi39c3aj1l7i-glibc-2.40-36/lib/libc.so.6)
-==1366199==    by 0x49B51BF: getc (in /nix/store/3bvxjkkmwlymr0fssczhgi39c3aj1l7i-glibc-2.40-36/lib/libc.so.6)
-==1366199==    by 0x402D9B: scanString (in /home/bgabri/Desktop/G/code/Themulator/Tests/thml.out)
-==1366199==    by 0x405203: themis (in /home/bgabri/Desktop/G/code/Themulator/Tests/thml.out)
-==1366199==    by 0x4023D7: main (in /home/bgabri/Desktop/G/code/Themulator/Tests/thml.out)
-==1366199== 
-==1366199== HEAP SUMMARY:
-==1366199==     in use at exit: 327,853 bytes in 6,415 blocks
-==1366199==   total heap usage: 101,016 allocs, 94,601 frees, 9,795,684 bytes allocated
-==1366199== 
-==1366199== LEAK SUMMARY:
-==1366199==    definitely lost: 0 bytes in 0 blocks
-==1366199==    indirectly lost: 0 bytes in 0 blocks
-==1366199==      possibly lost: 272 bytes in 1 blocks
-==1366199==    still reachable: 327,581 bytes in 6,414 blocks
-==1366199==         suppressed: 0 bytes in 0 blocks
-==1366199== Rerun with --leak-check=full to see details of leaked memory
-==1366199== 
-==1366199== For lists of detected and suppressed errors, rerun with: -s
-==1366199== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==1384734== Memcheck, a memory error detector
+==1384734== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==1384734== Using Valgrind-3.23.0 and LibVEX; rerun with -h for copyright info
+==1384734== Command: ./thml.out -D bin download
+==1384734== 
+==1384734== 
+==1384734== HEAP SUMMARY:
+==1384734==     in use at exit: 0 bytes in 0 blocks
+==1384734==   total heap usage: 2,039,862 allocs, 2,039,862 frees, 198,794,569 bytes allocated
+==1384734== 
+==1384734== All heap blocks were freed -- no leaks are possible
+==1384734== 
+==1384734== For lists of detected and suppressed errors, rerun with: -s
+==1384734== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
