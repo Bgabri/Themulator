@@ -3,8 +3,6 @@
 
 #include "json.h"
 
-#define COOKIE_FILE "cookies.txt"
-
 typedef enum cookies {
     load, save, load_save
 } cookies;
@@ -14,9 +12,8 @@ typedef struct CurlResponse {
     int len;
 } CurlResponse;
 
-
-CurlResponse *getCURL(char *url, jsonElement headersJson, cookies cookie);
-CurlResponse *postCURL(char *url, jsonElement headersJson, char* data, cookies cookie);
+CurlResponse *getCURL(char *url, jsonElement headersJson, cookies cookie, char *cookiePath);
+CurlResponse *postCURL(char *url, jsonElement headersJson, char* data, cookies cookie, char *cookiePath);
 void freeResponse(CurlResponse *response);
 
 #endif

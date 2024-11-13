@@ -119,23 +119,25 @@ int safeSystem(char *command) {
 /*
  * creates the given directory
  */
-int createDir(char *dir) {
-    struct stat st = {0};
-    if (stat(dir, &st) != -1) return 0;
+int createPath(char *path) {
+    if (pathExists(path)) return 0;
 
-    if (mkdir(dir, 0700) == 0) return 1;
+    if (mkdir(path, 0700) == 0) return 1;
     perror("Unable to create directory");
     return 0;
 }
 
-int removeDir(char *dir) {
-    struct stat st = {0};
-    if (stat(dir, &st) == -1) return 0;
-    if(rmdir(dir) == 0) return 1;
+int removePath(char *path) {
+    if (!pathExists(path)) return 0;
+    if(rmdir(path) == 0) return 1;
 
     perror("Unable to remove directory");
     return 0;
+}
 
+int pathExists(char *path) {
+    struct stat st = {0};
+    return stat(path, &st) != -1;
 }
 
 int sortEntries(const void *_a, const void *_b) {
@@ -155,7 +157,7 @@ dirent **getEntries(DIR *dir, int *size) {
 
     char outPath[MAX_CMD_LEN] = {0};
     sprintf(outPath, "%s/%s", options.dir, options.outDir);
-    createDir(outPath);
+    createPath(outPath);
 
     int numEntries = 0;
     int allocSize = 2;

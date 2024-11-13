@@ -36,13 +36,13 @@ char *find_csrf(char *html) {
     return csrf;
 }
 
-char *grabCsrfToken() {
+char *grabCsrfToken(char *cookiePath) {
     jsonElement header = newElement(_parent, "main");
     jsonElement agent = fromString("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0");
 
     addElement(header, agent);
 
-    CurlResponse *r = getCURL("https://themis.housing.rug.nl/log/in", header, save);
+    CurlResponse *r = getCURL("https://themis.housing.rug.nl/log/in", header, save, cookiePath);
 
     char *_csrf = find_csrf(r->str);
 
@@ -52,7 +52,7 @@ char *grabCsrfToken() {
     return _csrf;
 }
 
-int login(char *user, char *password, char *csrfToken) {
+int login(char *user, char *password, char *csrfToken, char* cookiePath) {
     jsonElement header = newElement(_parent, "main");
     jsonElement agent = fromString("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0");
     jsonElement referrer = fromString("Referer", "https://themis.housing.rug.nl/log/in");
@@ -64,7 +64,7 @@ int login(char *user, char *password, char *csrfToken) {
 
     sprintf(data, "user=%s&password=%s&_csrf=%s", user, password, csrfToken);
 
-    CurlResponse *r = postCURL("https://themis.housing.rug.nl/log/in", header, data, load_save);
+    CurlResponse *r = postCURL("https://themis.housing.rug.nl/log/in", header, data, load_save, cookiePath);
 
     char *v = strstr(r->str, "Welcome, logged in as");
 
@@ -75,22 +75,22 @@ int login(char *user, char *password, char *csrfToken) {
     return result;
 }
 
-CurlResponse *browse(char *url) {
+CurlResponse *browse(char *url, char* cookiePath) {
     jsonElement header = newElement(_parent, "main");
     jsonElement agent = fromString("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0");
 
     addElement(header, agent);
 
-    CurlResponse *r = getCURL(url, header, load);
+    CurlResponse *r = getCURL(url, header, load, cookiePath);
     freeElement(header);
     return r;
 }
 
-char **getTestCases(char *assignment, int *tcsSize) {
+char **getTestCases(char *assignment, int *tcsSize, char *cookiePath) {
     char *url = calloc(strlen(assignment) + 100, sizeof(char));
     sprintf(url, "https://themis.housing.rug.nl/%s", assignment);
 
-    CurlResponse *r = browse(url);
+    CurlResponse *r = browse(url, cookiePath);
     char *current = r->str;
 
     int tcsPos = 0;
@@ -130,22 +130,22 @@ char **getTestCases(char *assignment, int *tcsSize) {
     return tcs;
 }
 
-void downloadTestCases(char *assignment) {
+void downloadTestCases(char *assignment, char* cookiePath) {
     if (startsWith(assignment, "https://themis.housing.rug.nl")) assignment += strlen("https://themis.housing.rug.nl");
     if (startsWith(assignment, "themis.housing.rug.nl")) assignment += strlen("themis.housing.rug.nl");
     if (*assignment == '/') assignment++;
 
     int size = 0;
-    char **tcs = getTestCases(assignment, &size);
+    char **tcs = getTestCases(assignment, &size, cookiePath);
 
     if (size == 0) return;
     char *url = calloc(sizeof(tcs[0]) + sizeof(assignment) + 100, sizeof(char));
     char *filePath = calloc(sizeof(tcs[0]) + sizeof(options.inDir) + sizeof(options.dir) + 100, sizeof(char));
 
     sprintf(filePath, "%s/%s", options.dir, options.refDir);
-    createDir(filePath);
+    createPath(filePath);
     sprintf(filePath, "%s/%s", options.dir, options.inDir);
-    createDir(filePath);
+    createPath(filePath);
     assignment += sizeof("course");
     for (int i = 0; i < size; i++) {
         if (endsWith(tcs[i], ".out")) {
@@ -158,7 +158,7 @@ void downloadTestCases(char *assignment) {
         fflush(stdout);
 
         sprintf(url, "https://themis.housing.rug.nl/file/%s/%%40tests/%s", assignment, tcs[i]);
-        CurlResponse *r = browse(url);
+        CurlResponse *r = browse(url, cookiePath);
 
         FILE *file = fopen(filePath, "w");
 
@@ -180,24 +180,41 @@ void downloadTestCases(char *assignment) {
     free(tcs);
 }
 
-int themis() {
+void themis(char *cookiePath) {
+
+    curl_global_init(CURL_GLOBAL_DEFAULT);
     int size = 0;
+
+    if (pathExists(cookiePath)) {
+
+        CurlResponse *response = browse("https://themis.housing.rug.nl/course/", cookiePath);
+
+        char *v = strstr(response->str, "Welcome, logged in as");
+        freeResponse(response);
+        if (v != NULL) {
+            printf("Enter course link or path:\n");
+            char *path = scanString(&size, '\n', 0);
+            downloadTestCases(path, cookiePath);
+            free(path);
+            return;
+        }
+    }
+
     printf("user name:\n");
     char *user = scanString(&size, '\n', 0);
 
     printf("password:\n");
     char *pass = scanString(&size, '\n', '*');
 
-    curl_global_init(CURL_GLOBAL_DEFAULT);
 
-    char *csrfToken = grabCsrfToken();
+    char *csrfToken = grabCsrfToken(cookiePath);
     ensuref(csrfToken != NULL, "Curl: failed to grab csrf token\n");
-    if (login(user, pass, csrfToken)) {
+    if (login(user, pass, csrfToken, cookiePath)) {
         fprintf(stderr, "Login: success\n");
 
         printf("Enter course link or path:\n");
         char *path = scanString(&size, '\n', 0);
-        downloadTestCases(path);
+        downloadTestCases(path, cookiePath);
         free(path);
     } else {
         fprintf(stderr, "Login: failed\n");
@@ -208,9 +225,4 @@ int themis() {
 
     free(user);
     free(pass);
-    safeSystem("rm cookies.txt");
-
-    // https://themis.housing.rug.nl/course/2024-2025/advalgo/labs-wk6/familytree
-
-    return 0;
 }

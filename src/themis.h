@@ -1,5 +1,6 @@
 #ifndef THEMIS_H
 #define THEMIS_H
-int themis();
+
+void themis(char *cookiePath);
 
 #endif

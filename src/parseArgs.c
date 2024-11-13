@@ -125,6 +125,7 @@ int printHelp(char *argv[], int *i, Options *o) {
     printf("\t\tthe folder to the input of the test cases\n");
     printf("\t--out-dir <folder>, -O <folder>\n");
     printf("\t\tthe folder where the output is placed\n");
+    printf("\t\twill also be used as the cookie output path\n");
     printf("\t--bin-dir <folder>, -B <folder>\n");
     printf("\t\tthe folder to output the binaries to\n");
     printf("\t--ref-dir <folder>, -R <folder>\n");

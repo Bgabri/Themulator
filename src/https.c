@@ -42,7 +42,7 @@ size_t write_callback(void *ptr, size_t size, size_t nmemb, CurlResponse *data) 
     return size * nmemb;
 }
 
-CurlResponse *getCURL(char *url, jsonElement headersJson, cookies cookie) {
+CurlResponse *getCURL(char *url, jsonElement headersJson, cookies cookie, char *cookiePath) {
 
     CurlResponse *response = newResponse();
 
@@ -55,10 +55,10 @@ CurlResponse *getCURL(char *url, jsonElement headersJson, cookies cookie) {
 
     // cookies
     if (cookie == load || cookie == load_save) {
-        curl_easy_setopt(curl, CURLOPT_COOKIEFILE, COOKIE_FILE); // Enable cookie engine
+        curl_easy_setopt(curl, CURLOPT_COOKIEFILE, cookiePath); // Enable cookie engine
     }
     if (cookie == save || cookie == load_save) {
-        curl_easy_setopt(curl, CURLOPT_COOKIEJAR, COOKIE_FILE); // Enable cookie engine
+        curl_easy_setopt(curl, CURLOPT_COOKIEJAR, cookiePath); // Enable cookie engine
     }
 
     // build headers
@@ -88,11 +88,11 @@ CurlResponse *getCURL(char *url, jsonElement headersJson, cookies cookie) {
     curl_slist_free_all(headers);
 
     ensuref(result == CURLE_OK, "Curl: failed\n");
-    
+
     return response;
 }
 
-CurlResponse *postCURL(char *url, jsonElement headersJson, char* data, cookies cookie) {
+CurlResponse *postCURL(char *url, jsonElement headersJson, char* data, cookies cookie, char *cookiePath) {
     CurlResponse *response = newResponse();
 
     CURL *curl = curl_easy_init();
@@ -106,10 +106,10 @@ CurlResponse *postCURL(char *url, jsonElement headersJson, char* data, cookies c
 
     // cookies
     if (cookie == load || cookie == load_save) {
-        curl_easy_setopt(curl, CURLOPT_COOKIEFILE, COOKIE_FILE); // Enable cookie engine
+        curl_easy_setopt(curl, CURLOPT_COOKIEFILE, cookiePath); // Enable cookie engine
     }
     if (cookie == save || cookie == load_save) {
-        curl_easy_setopt(curl, CURLOPT_COOKIEJAR, COOKIE_FILE); // Enable cookie engine
+        curl_easy_setopt(curl, CURLOPT_COOKIEJAR, cookiePath); // Enable cookie engine
     }
 
 

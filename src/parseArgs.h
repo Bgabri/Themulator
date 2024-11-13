@@ -30,6 +30,7 @@
  *         the folder where the output is placed
  *     --bin-dir <folder>, -B <folder>
  *         the folder to output the binaries to
+ *         will also be used as the cookie output path
  *     --ref-dir <folder>, -R <folder>
  *         the folder with the reference outputs of the test cases
  */
