@@ -124,6 +124,8 @@ int printHelp(char *argv[], int *i, Options *o) {
     "\t\tprint out all the execution steps\n"
     "\t--valgrind, -v\n"
     "\t\truns the binary through valgrind\n"
+    "\t--quick-exit, -q\n"
+    "\t\texits immediately and prints error on runtime error\n"
     "\t--bin-name <name>, -b <name>\n"
     "\t\tthe name to give to the outputted binary\n"
     "\t--dir <folder>, -D <folder>\n"
