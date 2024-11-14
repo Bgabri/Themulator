@@ -41,6 +41,11 @@ int parseValgrind(char *argv[], int *i, Options *o) {
     return 1;
 }
 
+int parseQuickExit(char *argv[], int *i, Options *o) {
+    o->quickExit = 1;
+    return 1;
+}
+
 int parseDir(char *argv[], int *i, Options *o) {
     if (argv[*i] == NULL) return -1;
     o->dir = argv[*i];
@@ -145,6 +150,7 @@ int parseDouble(char *argv[], int *i, Options *o) {
     if (!strcmp(arg, "--dry-run")) return parseDryRun(argv, i, o);
     if (!strcmp(arg, "--verbose")) return parseVerbose(argv, i, o);
     if (!strcmp(arg, "--valgrind")) return parseValgrind(argv, i, o);
+    if (!strcmp(arg, "--quick-exit")) return parseQuickExit(argv, i, o);
     if (!strcmp(arg, "--bin-name")) return parseBinName(argv, i, o);
     if (!strcmp(arg, "--help")) return printHelp(argv, i, o);
     if (!strcmp(arg, "--bin-dir")) return parseBinDir(argv, i, o);
@@ -171,6 +177,8 @@ int parseOption(char *argv[], int *i, Options *o) {
             return parseDryRun(argv, i, o);
         case 'v':
             return parseValgrind(argv, i, o);
+        case 'q':
+            return parseQuickExit(argv, i, o);
         case 'b':
             return parseBinName(argv, i, o);
         case 'h':
@@ -200,6 +208,7 @@ Options parseOptions(int argc, char *argv[]) {
     options.verbose = _VERBOSE;
     options.dryRun = _DRYRUN;
     options.valgrind = _VALGRIND;
+    options.quickExit = _QUICK_EXIT;
 
     options.dir = _DIR;
     options.binDir = _BIN_DIR;
@@ -227,10 +236,11 @@ void printOptions(Options options) {
     printf("verbose:       %d\n", options.verbose);
     printf("dryRun:        %d\n", options.dryRun);
     printf("valgrind:      %d\n", options.dryRun);
+    printf("quickExit:     %d\n", options.quickExit);
     printf("dir:           %s\n", options.dir);
-    printf("binDir:        %s\n", options.binDir);
-    printf("binName:       %s\n", options.binName);
     printf("inDir:         %s\n", options.inDir);
     printf("outDir:        %s\n", options.outDir);
     printf("refDir:        %s\n", options.refDir);
+    printf("binDir:        %s\n", options.binDir);
+    printf("binName:       %s\n", options.binName);
 }

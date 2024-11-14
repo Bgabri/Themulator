@@ -9,7 +9,8 @@
 #define _COMMAND run
 #define _VERBOSE 0
 #define _DRYRUN 0
-#define _VALGRIND 0;
+#define _VALGRIND 0
+#define _QUICK_EXIT 0
 
 #define _DIR "."
 #define _BIN_DIR "bin"
@@ -31,6 +32,7 @@ typedef struct Options {
     short verbose;
     short dryRun;
     short valgrind;
+    short quickExit;
 
     char *dir;
     char *binDir;

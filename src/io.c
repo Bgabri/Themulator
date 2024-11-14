@@ -82,6 +82,27 @@ char *scanString(int *size, char endChar, char hide) {
     return p;
 }
 
+char *fscanString(FILE *file, int *size, char endChar) {
+    if (*size < 1) *size = 1;
+    char current = getchar();
+
+    char *p = calloc((*size + 1), sizeof(char));
+
+    int iPosition = 0;
+    while (current != endChar) {
+        if (*size <= iPosition) {
+            *size *= 2;
+            p = realloc(p, sizeof(char) * (*size + 1));
+        }
+
+        p[iPosition++] = current;
+        current = fgetc(file);
+    }
+    *size = iPosition;
+    p[iPosition] = '\0';
+    return p;
+}
+
 /*
  * checks if the given string ends with the given suffix
  */
@@ -164,13 +185,13 @@ int pathExists(char *path) {
 
 void printFile(char *path) {
     FILE *file;
-    char ch;
 
     file = fopen(path, "r");
     ensure(file != NULL);
 
-    while ((ch = fgetc(file)) != EOF) {
-        putchar(ch);
+    char c;
+    while ((c = fgetc(file)) != EOF) {
+        putchar(c);
     }
 
     fclose(file);

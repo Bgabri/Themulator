@@ -6,7 +6,9 @@
 #include "themis.h"
 #include "io.h"
 
+#define ERROR_FILE "tmp-err-file.err"
 extern Options options;
+
 
 typedef struct nibbler {
     unsigned int _1 : 8, _2 : 8, _3 : 8, _4 : 8;
@@ -60,6 +62,11 @@ void runInput() {
 
         char pipes[MAX_CMD_LEN] = {0};
 
+        if (options.quickExit) { // dont pipe err
+            errFile = realloc(errFile, (strlen(ERROR_FILE)+1)* sizeof(char));
+            strcpy(errFile, ERROR_FILE);
+        }
+
         sprintf(pipes, "< \"%s/%s/%s\" > \"%s/%s/%s\" 2> \"%s/%s/%s\"",
                 options.dir, options.inDir, inFile,
                 options.dir, options.outDir, outFile,
@@ -91,6 +98,13 @@ void runInput() {
         } else if (runResult != 0) {
             printf("\x1b[35m\x1b[1m[e]\x1b[0m %s", inFile);
             printf("\t\x1b[2mRuntime error: Program exited with code: %d\x1b[0m\n", runResult);
+            if (options.quickExit) {
+                char errPath[MAX_CMD_LEN] = {0};
+                sprintf(errPath, "%s/%s/%s",
+                        options.dir, options.outDir, ERROR_FILE);
+                printFile(errPath);
+                i = numEntries; // exit "gracefully"
+            }
         } else if (cmprResult == 1) {
             printf("\x1b[31m\x1b[1m[x]\x1b[0m %s", inFile);
             printf("\t\x1b[2mWrong output\x1b[0m\n");
@@ -115,7 +129,7 @@ int main(int argc, char *argv[]) {
     sprintf(cookieDir, "%s/cookie.jar", thmlConfigPath);
     free(thmlConfigPath);
 
-    parseOptions(argc, argv);
+parseOptions(argc, argv);
     switch (options.command) {
         case run:
             compileProgram(options.dir, options.binDir, options.binName);

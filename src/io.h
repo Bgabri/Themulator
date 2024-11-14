@@ -1,6 +1,7 @@
 #ifndef IO_H
 #define IO_H
 
+#include <stdio.h>
 #include <dirent.h>
 
 typedef struct dirent dirent;
@@ -17,5 +18,6 @@ int createPath(char *path);
 int removePath(char *path);
 int pathExists(char *path);
 void printFile(char *path);
+char *fscanString(FILE *file, int *size, char endChar);
 dirent **getEntries(DIR *dir, int *size);
 #endif

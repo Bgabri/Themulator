@@ -2,10 +2,10 @@
 A cli demake of Themis, the programing judge.
 
 ## Examples
-An example of running `thml` in `src/Test`.
+An example of running `thml` in `src/tests/sample`.
 
 ![thml run example](run.png)
-An example of running `thml download` in `src/Test`.
+An example of running `thml download` in `src/tests/sample`.
 
 ![thml download example](download.png)
 
@@ -69,6 +69,8 @@ Options:
         run without command execution
     --verbose
         print out all the execution steps
+    --quick-exit, -q
+        exits immediately and prints error on runtime error
     --valgrind, -v
         runs the binary through valgrind
     --bin-name <name>, -b <name>
@@ -85,3 +87,10 @@ Options:
     --ref-dir <folder>, -R <folder>
         the folder with the reference outputs of the test cases
 ```
+
+
+
+# TOXO
+ timer/maxtime
+ quick-exit
+ cfg
