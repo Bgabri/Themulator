@@ -18,8 +18,8 @@
           src = pkgs.fetchFromGitHub {
             owner = "Bgabri";
             repo = "Themulator";
-            rev = "v0.2.0";
-            sha256 = "sha256-sJge7Geybnvnwh5lizgXMtL0ESMq14bvWBVXC08zb9E=";
+            rev = "v0.2.1";
+            sha256 = "sha256-KQOReco0uYIumt7pg939fVZ8jys1LlmoZp4VGVXTG0c=";
           };
 
           buildInputs = with pkgs; [

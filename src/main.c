@@ -98,19 +98,26 @@ void runInput() {
         } else if (runResult != 0) {
             printf("\x1b[35m\x1b[1m[e]\x1b[0m %s", inFile);
             printf("\t\x1b[2mRuntime error: Program exited with code: %d\x1b[0m\n", runResult);
-            if (options.quickExit) {
-                char errPath[MAX_CMD_LEN] = {0};
-                sprintf(errPath, "%s/%s/%s",
-                        options.dir, options.outDir, ERROR_FILE);
-                printFile(errPath);
-                i = numEntries; // exit "gracefully"
-            }
         } else if (cmprResult == 1) {
             printf("\x1b[31m\x1b[1m[x]\x1b[0m %s", inFile);
             printf("\t\x1b[2mWrong output\x1b[0m\n");
         } else {
             printf("\x1b[33m\x1b[1m[?]\x1b[0m %s", inFile);
             printf("\t\x1b[2mReference file not found.\x1b[0m\n");
+        }
+
+        if (options.quickExit && !(runResult == 0 && cmprResult == 0 )) {
+            if (options.quickExit) {
+                char path[MAX_CMD_LEN] = {0};
+                sprintf(path, "%s/%s/%s",
+                        options.dir, options.outDir, errFile);
+                printFile(path);
+
+                sprintf(path, "%s/%s/%s",
+                        options.dir, options.outDir, outFile);
+                printFile(path);
+                i = numEntries; // exit "gracefully"
+            }
         }
 
         free(outFile);
